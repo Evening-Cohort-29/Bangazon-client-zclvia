@@ -1,8 +1,13 @@
-import { useEffect, useRef, useState } from 'react'
-import { getCategories } from '../data/products'
-import { Input, Select } from './form-elements'
+import { useEffect, useRef, useState } from "react";
+import { getCategories } from "../data/products";
+import { Input, Select } from "./form-elements";
 
-export default function Filter({ productCount, onSearch, locations }) {
+export default function Filter({
+  productCount,
+  onSearch,
+  locations,
+  categories,
+}) {
   const refEls = {
     location: useRef(),
     category: useRef(),
@@ -11,71 +16,69 @@ export default function Filter({ productCount, onSearch, locations }) {
     order_by: useRef(),
     direction: useRef(),
     number_sold: useRef(),
-  }
+  };
 
-  const [showFilters, setShowFilters] = useState(false)
-  const [query, setQuery] = useState('')
-  const [categories, setCategories] = useState([{id: 1, name: 'Apples'}, {id: 2, name: 'Oranges'}, {id: 3, name: 'Lemons'}])
-  const [direction, setDirection] = useState('asc')
+  const [showFilters, setShowFilters] = useState(false);
+  const [query, setQuery] = useState("");
+  const [direction, setDirection] = useState("asc");
   const clear = () => {
     for (let ref in refEls) {
-      if (ref === 'direction') {
-        refEls[ref].current.checked = false
-        setDirection('asc')
+      if (ref === "direction") {
+        refEls[ref].current.checked = false;
+        setDirection("asc");
       } else if (["min_price", "name"].includes(ref)) {
-        refEls[ref].current.value = ""
-      }
-      else {
-        refEls[ref].current.value = 0
+        refEls[ref].current.value = "";
+      } else {
+        refEls[ref].current.value = 0;
       }
     }
-    onSearch('')
-  }
+    onSearch("");
+  };
   const orderByOptions = [
     {
-      id: 'price',
-      name: 'Price'
+      id: "price",
+      name: "Price",
     },
     {
-      id: 'name',
-      name: 'Name'
-    }
-  ]
+      id: "name",
+      name: "Name",
+    },
+  ];
 
   const directionOptions = [
     {
-      name: 'direction',
-      label: 'asc'
+      name: "direction",
+      label: "asc",
     },
     {
-      name: 'direction',
-      label: 'desc'
+      name: "direction",
+      label: "desc",
     },
-  ]
+  ];
 
   useEffect(() => {
     if (query) {
-      onSearch(query)
+      onSearch(query);
     }
-  }, [query])
+  }, [query]);
 
   const buildQuery = (key, value) => {
     if (value && value !== "0") {
-      return `${key}=${value}&`
+      return `${key}=${value}&`;
     }
-    return ""
-  }
+    return "";
+  };
 
   const filter = () => {
-    let newQuery = ""
+    let newQuery = "";
     for (let refEl in refEls) {
-      newQuery += buildQuery(refEl, refEls[refEl].current.value)
+      newQuery += buildQuery(refEl, refEls[refEl].current.value);
     }
-    setQuery(newQuery)
-  }
+    setQuery(newQuery);
+  };
 
   return (
-    <div className='level'>
+    <div className="level">
       <div className="level-left">
         <div className="level-item">
           <p className="subtitle is-5">
@@ -100,7 +103,9 @@ export default function Filter({ productCount, onSearch, locations }) {
       </div>
       <div className="level-right">
         <div className="level-item">
-          <div className={`dropdown is-right ${showFilters ? 'is-active' : ''}`}>
+          <div
+            className={`dropdown is-right ${showFilters ? "is-active" : ""}`}
+          >
             <div className="dropdown-trigger">
               <button
                 className="button"
@@ -110,7 +115,7 @@ export default function Filter({ productCount, onSearch, locations }) {
               >
                 <span>Filter Products</span>
                 <span className="icon is-small">
-                <i className="fas fa-filter"></i>
+                  <i className="fas fa-filter"></i>
                 </span>
               </button>
             </div>
@@ -141,7 +146,6 @@ export default function Filter({ productCount, onSearch, locations }) {
                     addlClass="is-horizontal"
                     refEl={refEls.min_price}
                   />
-
                 </div>
                 <hr className="dropdown-divider"></hr>
                 <div className="dropdown-item">
@@ -169,9 +173,9 @@ export default function Filter({ productCount, onSearch, locations }) {
                           ref={refEls.direction}
                           onChange={(event) => {
                             if (event.target.checked) {
-                              setDirection('desc')
+                              setDirection("desc");
                             } else {
-                              setDirection('asc')
+                              setDirection("asc");
                             }
                           }}
                         />
@@ -201,5 +205,5 @@ export default function Filter({ productCount, onSearch, locations }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
