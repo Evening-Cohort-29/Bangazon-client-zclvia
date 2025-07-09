@@ -16,10 +16,11 @@ export default function Profile() {
         setProfile(profileData)
       }
     })
-  }, [])
+  }, [setProfile])
 
   return (
     <>
+      <h1>{profile.user.first_name} {profile.user.last_name}</h1>
       <CardLayout title="Favorite Stores" width="is-full">
         <div className="columns is-multiline">
           {
