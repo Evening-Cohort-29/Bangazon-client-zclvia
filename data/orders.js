@@ -23,6 +23,6 @@ export function completeCurrentOrder(orderId, paymentTypeId) {
       Authorization: `Token ${localStorage.getItem("token")}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ paymentTypeId }),
+    body: JSON.stringify({ payment_type: paymentTypeId }),
   });
 }
