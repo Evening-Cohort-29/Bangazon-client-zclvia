@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import Filter from "../../components/filter";
 import Layout from "../../components/layout";
 import Navbar from "../../components/navbar";
+import RecentProductsBar from "../../components/recents";
 import { ProductCard } from "../../components/product/card";
 import { getProducts } from "../../data/products";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasFiltered, setHasFiltered] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("Loading products...");
   const [locations, setLocations] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -34,7 +36,7 @@ export default function Products() {
           setIsLoading(false);
           setLocations(locationObjects);
           setCategories(categoryObjects);
-        }
+        } 
       })
       .catch((err) => {
         setLoadingMessage(
@@ -44,6 +46,8 @@ export default function Products() {
   }, []);
 
   const searchProducts = (event) => {
+    // if event is empty string, no filter has been applied
+    event === "" ? setHasFiltered(false) : setHasFiltered(true);
     getProducts(event).then((productsData) => {
       if (productsData) {
         setProducts(productsData);
@@ -61,12 +65,21 @@ export default function Products() {
         locations={locations}
         categories={categories}
       />
-
-      <div className="columns is-multiline">
-        {products.map((product) => (
-          <ProductCard product={product} key={product.id} />
-        ))}
-      </div>
+      <h1>{hasFiltered ? <div style={{fontWeight: "bold"}}>Products matching filters:</div> : ""}</h1>
+      {
+        hasFiltered ? 
+          <div className="columns is-multiline">
+            {products.map((product) => (
+              <ProductCard product={product} key={product.id} />
+            ))}
+          </div>
+        : 
+          categories.map((category) => (
+            <div key={category.id} >
+              <RecentProductsBar key={category.id} category={category} />
+            </div>
+          ))
+      }
     </>
   );
 }
