@@ -11,7 +11,7 @@ export default function RecentProductsBar({ category }) {
   }, [category]);
 
   return (
-    <div style={{ position: "relative", marginTop: "2rem", marginBottom: "2rem" }}>
+    <div style={{ position: "relative", marginTop: "3.5rem"}}>
       {/* Tab in top left */}
       <div
         style={{
