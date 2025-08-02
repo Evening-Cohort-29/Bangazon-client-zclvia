@@ -56,7 +56,7 @@ export default function Profile() {
         <div className="columns is-multiline">
           {
             profile.likes?.map(product => (
-              <ProductCard product={product} key={product.id} width="is-one-third" />
+              <ProductCard product={product.product} key={product.product.id} width="is-one-third" />
             ))
           }
         </div>
