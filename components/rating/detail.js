@@ -11,7 +11,6 @@ export function Ratings({
   number_purchased,
   likes = [],
 }) {
-  // const [productId, setProductId] = useState(0)
   const saveRating = (newRating) => {
     rateProduct(productId, newRating).then(refresh);
   };

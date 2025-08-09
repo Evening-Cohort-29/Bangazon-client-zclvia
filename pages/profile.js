@@ -20,7 +20,7 @@ export default function Profile() {
 
   return (
     <>
-      <h1>{profile.user.first_name} {profile.user.last_name}</h1>
+      <h1>{profile?.user?.first_name} {profile?.user?.last_name}</h1>
       <CardLayout title="Favorite Stores" width="is-full">
         <div className="columns is-multiline">
           {
@@ -56,7 +56,7 @@ export default function Profile() {
         <div className="columns is-multiline">
           {
             profile.likes?.map(product => (
-              <ProductCard product={product.product} key={product.product.id} width="is-one-third" />
+              <ProductCard product={product} key={product.id} width="is-one-third" />
             ))
           }
         </div>
