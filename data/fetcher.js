@@ -1,34 +1,39 @@
-const API_URL = 'http://localhost:8000'
+const API_URL = "http://localhost:8000";
 
 const checkError = (res) => {
   if (!res.ok) {
     throw Error(res.status);
   }
-  return res
-}
+  return res;
+};
 
-const checkErrorJson = (res) => {
-  if (res.status !== 200) {
-    throw Error(res.status);
+const checkErrorJson = async (res) => {
+  if (res.status < 200 || res.status >= 300) {
+    // Try to get the error message from the response body
+    try {
+      const errorData = await res.json();
+      throw Error(errorData.message || `HTTP ${res.status}`);
+    } catch {
+      throw Error(`HTTP ${res.status}`);
+    }
   } else {
-    return res.json()
+    return res.json();
   }
-}
-
+};
 
 const catchError = (err) => {
-  if (err.message === '401') {
-    window.location.href = "/login"
+  if (err.message === "401") {
+    window.location.href = "/login";
   }
-  if (err.message === '404') {
+  if (err.message === "404") {
     throw Error(err.message);
   }
-}
+};
 
-export const fetchWithResponse = (resource, options) => fetch(`${API_URL}/${resource}`, options)
-  .then(checkErrorJson)
-  .catch(catchError)
+export const fetchWithResponse = (resource, options) =>
+  fetch(`${API_URL}/${resource}`, options)
+    .then(checkErrorJson)
+    .catch(catchError);
 
-export const fetchWithoutResponse = (resource, options) => fetch(`${API_URL}/${resource}`, options)
-  .then(checkError)
-  .catch(catchError)
+export const fetchWithoutResponse = (resource, options) =>
+  fetch(`${API_URL}/${resource}`, options).then(checkError).catch(catchError);
